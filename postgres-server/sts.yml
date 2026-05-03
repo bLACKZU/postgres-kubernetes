@@ -4,7 +4,7 @@ metadata:
   name: postgres-sts
 spec:
   serviceName: postgres-headless-svc
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: postgres
@@ -32,7 +32,7 @@ spec:
               exec:
                 command:
                   - /pre-stop.sh
-          image: bitnami/postgresql-repmgr:latest
+          image: public.ecr.aws/bitnami/postgresql-repmgr:12.9.0-debian-10-r18
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsUser: 1001
