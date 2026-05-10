@@ -129,7 +129,7 @@ spec:
                 - bash
                 - -ec
                 - 'PGPASSWORD=$POSTGRES_PASSWORD psql -w -U "postgres" -d "postgres"  -h 127.0.0.1 -c "SELECT 1"'
-            initialDelaySeconds: 5
+            initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             successThreshold: 1
@@ -140,10 +140,16 @@ spec:
             - name: hooks-scripts
               mountPath: /pre-stop.sh
               subPath: pre-stop.sh
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
         - name: hooks-scripts
           configMap:
             name: postgres-cm
+            defaultMode: 0755
+        - name: init-scripts
+          configMap:
+            name: postgres-init-scripts
             defaultMode: 0755
   volumeClaimTemplates:
     - metadata:
